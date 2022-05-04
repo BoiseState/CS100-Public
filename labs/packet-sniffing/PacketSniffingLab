@@ -1,0 +1,145 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled0.ipynb",
+      "provenance": [],
+      "toc_visible": true,
+      "authorship_tag": "ABX9TyNMcxOEOyz/8B1rzF5TsYOJ",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/BoiseState/CS100-Public/blob/master/labs/packet-sniffing/PacketSniffingLab\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "BjNx7Hwz2b8_",
+        "outputId": "6648d42f-9fed-41a4-c1a6-59a4b56ed75d"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collecting scapy\n",
+            "  Downloading scapy-2.4.5.tar.gz (1.1 MB)\n",
+            "\u001b[?25l\r\u001b[K     |▎                               | 10 kB 20.7 MB/s eta 0:00:01\r\u001b[K     |▋                               | 20 kB 25.7 MB/s eta 0:00:01\r\u001b[K     |▉                               | 30 kB 11.8 MB/s eta 0:00:01\r\u001b[K     |█▏                              | 40 kB 9.0 MB/s eta 0:00:01\r\u001b[K     |█▌                              | 51 kB 4.7 MB/s eta 0:00:01\r\u001b[K     |█▊                              | 61 kB 5.5 MB/s eta 0:00:01\r\u001b[K     |██                              | 71 kB 5.7 MB/s eta 0:00:01\r\u001b[K     |██▍                             | 81 kB 6.0 MB/s eta 0:00:01\r\u001b[K     |██▋                             | 92 kB 6.7 MB/s eta 0:00:01\r\u001b[K     |███                             | 102 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███▎                            | 112 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███▌                            | 122 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███▉                            | 133 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████▏                           | 143 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████▍                           | 153 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████▊                           | 163 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████                           | 174 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████▎                          | 184 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████▋                          | 194 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████                          | 204 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████▏                         | 215 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████▌                         | 225 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████▉                         | 235 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████                         | 245 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████▍                        | 256 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████▋                        | 266 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████                        | 276 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████▎                       | 286 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████▌                       | 296 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████▉                       | 307 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████▏                      | 317 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████▍                      | 327 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████▊                      | 337 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████                      | 348 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████▎                     | 358 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████▋                     | 368 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████                     | 378 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████▏                    | 389 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████▌                    | 399 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████▉                    | 409 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████                    | 419 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████▍                   | 430 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████▊                   | 440 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████                   | 450 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████▎                  | 460 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████▋                  | 471 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████▉                  | 481 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████▏                 | 491 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████▍                 | 501 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████▊                 | 512 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████                 | 522 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████▎                | 532 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████▋                | 542 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████                | 552 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████▏               | 563 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████▌               | 573 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████▉               | 583 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████               | 593 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████▍              | 604 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████▊              | 614 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████              | 624 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████▎             | 634 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████▋             | 645 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████▉             | 655 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████▏            | 665 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████▌            | 675 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████▊            | 686 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████            | 696 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████▍           | 706 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████▋           | 716 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████           | 727 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████▏          | 737 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████▌          | 747 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████▉          | 757 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████          | 768 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████▍         | 778 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████▊         | 788 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████         | 798 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████▎        | 808 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████▋        | 819 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████▉        | 829 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████▏       | 839 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████▌       | 849 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████▊       | 860 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████████       | 870 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████████▍      | 880 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████████▋      | 890 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████████      | 901 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████████▎     | 911 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████████▌     | 921 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████████▉     | 931 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████████▏    | 942 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████████▍    | 952 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████████▊    | 962 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████████    | 972 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████████▎   | 983 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████████▋   | 993 kB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████████▉   | 1.0 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████████████▏  | 1.0 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████████████▌  | 1.0 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |█████████████████████████████▊  | 1.0 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████████████  | 1.0 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████████████▍ | 1.1 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |██████████████████████████████▋ | 1.1 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████████████ | 1.1 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████████████▎| 1.1 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████████████▌| 1.1 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |███████████████████████████████▉| 1.1 MB 5.4 MB/s eta 0:00:01\r\u001b[K     |████████████████████████████████| 1.1 MB 5.4 MB/s \n",
+            "\u001b[?25hBuilding wheels for collected packages: scapy\n",
+            "  Building wheel for scapy (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for scapy: filename=scapy-2.4.5-py2.py3-none-any.whl size=1261555 sha256=d82f8bd4b65c18c1daf3f8037a716a1752449f5ff62bc3b5518a4407cfad269a\n",
+            "  Stored in directory: /root/.cache/pip/wheels/b9/6e/c0/0157e466a5e02d3ff28fc7587dff329b4a967a23b3f9b11385\n",
+            "Successfully built scapy\n",
+            "Installing collected packages: scapy\n",
+            "Successfully installed scapy-2.4.5\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip3 install scapy\n",
+        "from scapy.all import *\n",
+        "import sys"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "\n",
+        "# Load pcap file\n",
+        "# pcap = rdpcap(\"cyber_lab.pcap\")\n",
+        "# pcap = [pkt for pkt in pcap if TCP in pkt]\n",
+        "\n",
+        "# Look at one packet -- gives you bunch of information, \\\n",
+        "like dst - destination, src - where packet originated, p\\\n",
+        "ort - which network port the packet should be routed\n",
+        "# https://ipcisco.com/lesson/network-ports/ -- ports - u\\\n",
+        "sed by TCP and UDP; software listens at specific ports f\\\n",
+        "or network traffic\n",
+        "# pcap[0]\n",
+        "# Try a different one -- pcap[ FILL IN]\n",
+        "\n",
+        "# Can pull out packet information in a more usable forma\\\n",
+        "t\n",
+        "packet = pcap[0]\n",
+        "print(\"Source IP: \" + packet[IP].src)\n",
+        "print(\"Destination IP: \" + packet[IP].dst)\n",
+        "print(\"Source port: \" + str(packet[TCP].sport))\n",
+        "print(\"Destinations port: \" + str(packet[TCP].dport))\n",
+        "print(\"Packet Payload: \" + str(packet[TCP].payload))\n",
+        "\n",
+        "\n",
+        "# Fill in for loop to print the first 10 packet's inform\\\n",
+        "ation\n",
+        "for i in range(10):\n",
+        "  packet = pcap[i]\n",
+        "  print(\"Source IP: \" + packet[IP].src)\n",
+        "  print(\"Destination IP: \" + packet[IP].dst)\n",
+        "  print(\"Source port: \" + str(packet[TCP].sport))\n",
+        "  print(\"Destinations port: \" + str(packet[TCP].dport))\n",
+        "  print(\"Packet Payload: \" + str(packet[TCP].payload))\n",
+        "\n",
+        "\n",
+        "# We want to find the network traffic coming from the co\\\n",
+        "ffee shop\n",
+        "# The coffee shop's IP address is 10.3.0.18\n",
+        "# Packets coming from the coffee shop have the same subn\\\n",
+        "et as you. In other words, their IP addresses start with\\\n",
+        " 10.3.0.\n",
+        "# Fill in the for loop to create a list of packets that \\\n",
+        "are coming from the coffee shop\n",
+        "ip_start = \"10.3.0\"\n",
+        "number_packets = len(pcap)\n",
+        "shop_ip_addrs = []\n",
+        "for packet in pcap:\n",
+        "  source_ip = packet[IP].src\n",
+        "  if ip_start in source_ip and source_ip not in shop_ip_\\\n",
+        "addrs:\n",
+        "    shop_ip_addrs.append(source_ip)\n",
+        "\n",
+        "\n",
+        "# How many different ip addresses are at the coffee shop\\\n",
+        "?  (Hint: Use len to find how many elements are in shop_\\\n",
+        "ip_addrs)\n",
+        "# ans: 4\n",
+        "\n",
+        "\n",
+        "# Let's snoop on some email.\n",
+        "# First, we need to get the packets from one of the ip a\\\n",
+        "ddresses\n",
+        "ip_address = shop_ip_addrs[0]\n",
+        "mail_packets = []\n",
+        "\n",
+        "for packet in pcap:\n",
+        "  if packet[IP].src == ip_address or packet[IP].dst == i\\\n",
+        "p_address:\n",
+        "    if packet[TCP].dport == 25 or packet[TCP].dport == 1\\\n",
+        "43:\n",
+        "        mail_packets.append(packet)"
+      ],
+      "metadata": {
+        "id": "FqtyT_xX3kE2"
+      }
+    }
+  ]
+}
